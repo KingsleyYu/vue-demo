@@ -1,12 +1,13 @@
 import Vue from 'Vue'
 import {
-    Button
+    Button,Icon
 } from 'wkzf'
 import 'weui/dist/style/weui.css'
 
 new Vue({
     el: 'body',
     components: {
-        'weui-button': Button
+        'weui-button': Button,
+        Icon
     }
 })
