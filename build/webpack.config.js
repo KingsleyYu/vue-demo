@@ -1,6 +1,7 @@
 // nodejs 中的path模块
 var path = require('path');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
+var ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 module.exports = {
     // 入口文件，path.resolve()方法，可以结合我们给定的两个参数最后生成绝对路径，最终指向的就是我们的index.js文件
@@ -33,7 +34,7 @@ module.exports = {
                 loader: 'vue'
             }, {
                 test: /\.js$/,
-                loader: 'babel?presets=es2015',
+                loader: 'babel',
                 exclude: /node_modules/
             }, {
                 test: /\.css$/,
@@ -53,7 +54,19 @@ module.exports = {
             }
         ]
     },
+    babel: {
+        presets: ['es2015', 'stage-0'],
+        plugins: ['transform-runtime']
+    },
+    vue: {
+        loaders: {
+            css: ExtractTextPlugin.extract("style!css"),
+            less: ExtractTextPlugin.extract("style!css!less")
+        }
+    },
     plugins: [
+        // 提取css为单文件
+        new ExtractTextPlugin("../[name].[contenthash].css"),
         new HtmlWebpackPlugin({
             filename: '../index.html',
             template: path.resolve(__dirname, '../app/index/index.html'),
