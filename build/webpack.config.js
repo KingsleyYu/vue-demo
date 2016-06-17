@@ -5,8 +5,9 @@ var HtmlWebpackPlugin = require('html-webpack-plugin');
 module.exports = {
     // 入口文件，path.resolve()方法，可以结合我们给定的两个参数最后生成绝对路径，最终指向的就是我们的index.js文件
     entry: {
-        index: path.resolve(__dirname, '../example/index/index.js'),
-        vendors: [
+        index: path.resolve(__dirname, '../app/index/index.js'),
+        commons: [
+            'wkzf',
             'Vue'
         ]
     },
@@ -19,9 +20,9 @@ module.exports = {
         chunkFilename: '[id].[chunkhash].js'
     },
     resolve: {
-        // alias: {
-        //     Favlist: path.resolve(__dirname, '../../components/Favlist.vue')
-        // },
+        alias: {
+            'wkzf': path.resolve(__dirname, '../../vue-weui/dist/vue-weui.min.js')
+        },
         extensions: ['', '.js', '.vue']
     },
     module: {
@@ -34,6 +35,12 @@ module.exports = {
                 test: /\.js$/,
                 loader: 'babel?presets=es2015',
                 exclude: /node_modules/
+            }, {
+                test: /\.css$/,
+                loader: 'style!css'
+            }, {
+                test: /\.less$/,
+                loader: 'style!css!autoprefixer!less'
             },
             // 加载图片
             {
@@ -46,14 +53,7 @@ module.exports = {
             }
         ]
     },
-    vue: {
-        loaders: {
-            css: ExtractTextPlugin.extract("css"),
-            less: ExtractTextPlugin.extract("css!less")
-        }
-    },
     plugins: [
-        
         new HtmlWebpackPlugin({
             filename: '../index.html',
             template: path.resolve(__dirname, '../app/index/index.html'),

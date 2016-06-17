@@ -5,6 +5,13 @@ var webpack = require('webpack');
 // 引入基本配置
 var config = require('./webpack.config');
 
+config.vue = {
+    loaders: {
+        css: ExtractTextPlugin.extract("style!css"),
+        less: ExtractTextPlugin.extract("style!css!less")
+    }
+};
+
 config.plugins = [
     new webpack.DefinePlugin({
         'process.env': {
@@ -20,8 +27,8 @@ config.plugins = [
     new webpack.optimize.OccurenceOrderPlugin(),
     //公共模块提取
     new webpack.optimize.CommonsChunkPlugin({
-        name: 'vendors',
-        filename: 'vendors.js',
+        name: 'commons',
+        filename: 'commons.js',
     }),
     // 提取css为单文件
     new ExtractTextPlugin("../[name].[contenthash].css"),
