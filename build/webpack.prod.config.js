@@ -10,12 +10,12 @@ config.plugins = [
             NODE_ENV: '"production"'
         }
     }),
-    // 压缩代码
-    // new webpack.optimize.UglifyJsPlugin({
-    //     compress: {
-    //         warnings: false
-    //     }
-    // }),
+    //压缩代码
+    new webpack.optimize.UglifyJsPlugin({
+        compress: {
+            warnings: false
+        }
+    }),
     new webpack.optimize.OccurenceOrderPlugin(),
     //公共模块提取
     new webpack.optimize.CommonsChunkPlugin({

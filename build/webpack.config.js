@@ -8,8 +8,8 @@ module.exports = {
     entry: {
         index: path.resolve(__dirname, '../app/index/index.js'),
         commons: [
-            'wkzf',
-            'Vue'
+            'Vue',
+            //'wkzf'
         ]
     },
     // 输出配置
@@ -22,7 +22,8 @@ module.exports = {
     },
     resolve: {
         alias: {
-            'wkzf': path.resolve(__dirname, '../../vue-weui/dist/vue-weui.min.js')
+            //'wkzf': path.resolve(__dirname, '../../vue-weui/dist/vue-weui.min.js')
+            'wkzf': path.resolve(__dirname, '../../vue-weui/components/')
         },
         extensions: ['', '.js', '.vue']
     },
