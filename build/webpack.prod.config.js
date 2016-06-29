@@ -26,6 +26,12 @@ config.plugins = [
         filename: '../index.html',
         template: path.resolve(__dirname, '../app/index/index.html'),
         inject: true
+    }),
+    new webpack.ProvidePlugin({
+        'Moment': 'moment',
+        "$": "jquery",
+        "jQuery": "jquery",
+        "window.jQuery": "jquery",
     })
 ];
 

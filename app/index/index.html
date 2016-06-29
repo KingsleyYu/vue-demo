@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, user-scalable=no">
     <meta charset="utf-8">
     <title>首页</title>
-    <link rel="stylesheet" href="//github.ryan.me/vue-demo/node_modules/weui/dist/style/weui.min.css">
+    <link rel="stylesheet" href="http://localhost:8001/vue-demo/node_modules/weui/dist/style/weui.min.css">
 </head>
 
 <body>
@@ -48,6 +48,22 @@
                 <icon name="cancel"></icon>
             </div>
         </div>
+    </div>
+    <div class="page dialog">
+        <div class="hd">
+            <div class="page_title">Dialog</div>
+        </div>
+        <div class="bd spacing">
+            <weui-button type="primary" @click="showDialog(1)">点击弹出Dialog样式一</weui-button>
+            <weui-button type="primary" @click="showDialog(2)">点击弹出Dialog样式二</weui-button>
+        </div>
+        <dialog v-show="dialog1Show" type="confirm" title="弹窗标题" confirm-button="确认关闭" cancel-button="不关闭" @weui-dialog-confirm="handleDialogAction('确定', 1)" @weui-dialog-cancel="handleDialogAction('取消', 1)">
+            自定义弹窗内容
+            <br> ...
+        </dialog>
+        <dialog v-show="dialog2Show" type="alert" title="弹窗标题" @weui-dialog-confirm="handleDialogAction('确定', 2)">
+            弹窗内容，告知当前页面信息等
+        </dialog>
     </div>
 </body>
 

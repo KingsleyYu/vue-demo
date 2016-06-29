@@ -7,7 +7,7 @@ var config = require('./webpack.config');
 config.output.publicPath = '/';
 
 config.plugins = [
-	// 添加三个插件
+    // 添加三个插件
     new webpack.optimize.OccurenceOrderPlugin(),
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoErrorsPlugin(),
@@ -19,9 +19,11 @@ config.plugins = [
     })
 ];
 
+//设置调试
+
 // var devClient = 'webpack-hot-middleware/client';
 var devClient = './build/dev-client';
-Object.keys(config.entry).forEach(function (name, i) {
+Object.keys(config.entry).forEach(function(name, i) {
     var extras = [devClient];
     config.entry[name] = extras.concat(config.entry[name]);
 });

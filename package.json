@@ -4,6 +4,7 @@
   "description": "vue with webpack demo",
   "main": "index.js",
   "scripts": {
+    "config": "rimraf ./dist && webpack --display-modules --display-chunks --config build/webpack.config.js",
     "build": "rimraf ./dist && webpack --display-modules --display-chunks --config build/webpack.prod.config.js",
     "dev": "node ./build/dev-server.js"
   },
@@ -33,6 +34,7 @@
     "extract-text-webpack-plugin": "^1.0.1",
     "fastclick": "^1.0.6",
     "html-webpack-plugin": "^2.21.0",
+    "jquery": "^3.0.0",
     "less": "^2.7.1",
     "less-loader": "^2.2.3",
     "node-less": "^1.0.0",
@@ -50,6 +52,7 @@
   },
   "dependencies": {
     "vue": "^1.0.25",
-    "vue-router": "^0.7.13"
+    "vue-router": "^0.7.13",
+    "weui": "^0.4.2"
   }
 }
