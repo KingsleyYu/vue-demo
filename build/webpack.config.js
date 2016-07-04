@@ -18,13 +18,12 @@ module.exports = {
     output: {
         // 输出路径是 vue-demo/output/
         path: path.resolve(__dirname, '../dist'),
-        publicPath: 'dist/',
+        publicPath: '../',
         filename: '[name].[hash].js',
         chunkFilename: '[id].[chunkhash].js'
     },
     resolve: {
         alias: {
-            //'wkzf': path.resolve(__dirname, '../../vue-weui/dist/vue-weui.min.js')
             'wkzf': path.resolve(__dirname, '../../vue-weui/components/')
         },
         extensions: ['', '.js', '.vue']
@@ -41,7 +40,7 @@ module.exports = {
                 exclude: /node_modules/
             }, {
                 test: /\.css$/,
-                loader: 'style!css'
+                loader: ExtractTextPlugin.extract('style', 'css')
             }, {
                 test: /\.less$/,
                 loader: 'style!css!autoprefixer!less'
@@ -61,26 +60,46 @@ module.exports = {
         presets: ['es2015', 'stage-0'],
         plugins: ['transform-runtime']
     },
-    vue: {
+    vue: { // vue的配置
         loaders: {
-            css: ExtractTextPlugin.extract("style!css"),
-            less: ExtractTextPlugin.extract("style!css!less")
+            js: 'babel',
+            css: ExtractTextPlugin.extract('vue-style-loader', 'css-loader', 'less-loader')
         }
     },
     plugins: [
         // 提取css为单文件
-        new ExtractTextPlugin("../[name].[contenthash].css"),
-        new HtmlWebpackPlugin({
-            filename: '../index.html',
-            template: path.resolve(__dirname, '../app/index/index.html'),
-            inject: true
-        }),
-        new webpack.optimize.CommonsChunkPlugin({
-            name: 'vendors', // 公共模块的名称
-            chunks: chunks, // chunks是需要提取的模块
-            minChunks: chunks.length
+        new ExtractTextPlugin("../dist/[name].[contenthash].css", {
+            allChunks: true
         })
-    ]
+    ],
+    // 开启source-map调试模式，webpack有多种source-map，在官网文档可以查到
+    devtool: 'eval-source-map'
+}
+
+
+var pages = getEntry('app/**/*.html');
+for (var pathname in pages) {
+    // 配置生成的html文件，定义路径等
+    // console.log('pathname:' + pathname);
+    // console.log('path:' + pages[pathname]);
+    var conf = {
+        filename: pathname + '.html',
+        template: pages[pathname], // 模板路径
+        inject: true, // js插入位置
+        minify: {
+            removeComments: true,
+            collapseWhitespace: false
+        }
+    };
+
+    //限制页面只加载对应的js ，这边还附加了公共模块vendors.js
+    if (pathname in module.exports.entry) {
+        conf.chunks = ['vendors', pathname];
+        conf.hash = false;
+    }
+
+    // 需要生成几个html文件，就配置几个HtmlWebpackPlugin对象
+    module.exports.plugins.push(new HtmlWebpackPlugin(conf));
 }
 
 
@@ -90,12 +109,12 @@ function getEntry(globPath) {
         basename, tmp, pathname;
 
     glob.sync(globPath).forEach(function(entry) {
-        tmp=entry.split('/')[0]+'/';
+        tmp = entry.split('/')[0] + '/';
         basename = path.basename(entry, path.extname(entry));
-        pathname =entry.replace(path.extname(entry),"").replace(tmp,""); // 正确输出js和html的路径
+        pathname = entry.replace(path.extname(entry), "").replace(tmp, ""); // 正确输出js和html的路径
         entries[pathname] = path.resolve(__dirname, '../' + entry);
-        console.log('pathname:'+pathname);
+        // console.log('pathname:' + pathname);
     });
-    console.log(entries);
+    // console.log(entries);
     return entries;
 }
